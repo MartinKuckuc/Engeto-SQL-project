@@ -1,4 +1,4 @@
-# my-github-repo
+# Zadání projektu:
 Projekt sql.engeto - výzkumné otázky
 
 Výzkumné otázky
