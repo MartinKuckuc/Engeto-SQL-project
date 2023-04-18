@@ -131,9 +131,9 @@ SELECT 19218.875/14.11;
 -- Vypocet pro rok 2006. Vysledek: 1360 litru mleka za rok 2006.
 SELECT 19218.875/14.13;
 
--- Vypocet pro rok 2018. Vysledek: 1298 kilogramu chleba za rok 2006.
+-- Vypocet pro rok 2018. Vysledek: 1298 kilogramu chleba za rok 2018.
 SELECT 31520.5/24.28;
--- Vypocet pro rok 2006. Vysledek: 1728 litru mleka za rok 2006.
+-- Vypocet pro rok 20018. Vysledek: 1728 litru mleka za rok 2018.
 SELECT 31520.5/18.24;
 
 -- 3. OTAZKA
