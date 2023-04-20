@@ -184,11 +184,14 @@ ORDER BY price_growth ASC;
 -- Nejvice zlevnily rajska jablka cervena kulata, která mezi lety 2006 a 2007 zlevnily o 43,43 % (z 57,83 Kč za kg na 40,32 Kč). 
 -- Nejmensi narust prumernych cen byl pozorovan u rostlinneho roztiratelneho tuku, ktery mezi lety 2008 a 2009 zdrazil pouze o 0.01 % (z 84,4 Kč za litr a 84,41 Kč).
 
+
+
 -- 4. OTAZKA  
 -- Spojeni dvou tabulek czechia_payroll (cpay) a czechia_payroll_industry_branch (cpib) pres "code" a vytvoreni tabulky t2.
 -- Vytvoreni tabulky t_payroll_1
+
 CREATE OR REPLACE TABLE t_payroll_year_1 AS
-SELECT payroll_year, industry_name, average_salary
+SELECT payroll_year, average_salary
 FROM (
 	SELECT cpib.name AS industry_name, avg(cpay.value) AS average_salary, cpay.payroll_year
 	FROM czechia_payroll cpay
@@ -198,15 +201,16 @@ FROM (
 		AND cpay.calculation_code = 100	
 		AND cpay.unit_code = 200
 		AND cpay.industry_branch_code IS NOT NULL
-	GROUP BY cpib.name, cpay.payroll_year
+	GROUP BY cpay.payroll_year
 	ORDER BY cpay.payroll_year) t2;
+	
 
 SELECT *
 FROM t_payroll_year_1;
 
 -- Vytvoreni tabulky t_payroll_year_2
 CREATE OR REPLACE TABLE t_payroll_year_2 AS
-SELECT payroll_year AS payroll_year_2, industry_name AS industry_name_2, average_salary AS average_salary_2
+SELECT payroll_year AS payroll_year_2, average_salary AS average_salary_2
 FROM (
 	SELECT cpib.name AS industry_name, avg(cpay.value) AS average_salary, cpay.payroll_year
 	FROM czechia_payroll cpay
@@ -216,8 +220,9 @@ FROM (
 		AND cpay.calculation_code = 100	
 		AND cpay.unit_code = 200
 		AND cpay.industry_branch_code IS NOT NULL
-	GROUP BY cpib.name, cpay.payroll_year
+	GROUP BY cpay.payroll_year
 	ORDER BY cpay.payroll_year) t2;
+	
 
 SELECT *
 FROM t_payroll_year_2;
@@ -225,42 +230,25 @@ FROM t_payroll_year_2;
 -- Spojeni tabulek t_payroll_year_1 a t_payroll_year_2
 -- Vytvoreni nove tabulky t_salary_growth
 CREATE OR REPLACE TABLE t_salary_growth
-SELECT payroll_year, payroll_year_2, industry_name, industry_name_2, average_salary, average_salary_2, 
+SELECT payroll_year, payroll_year_2, average_salary, average_salary_2, 
 	round((average_salary_2 - average_salary) / average_salary_2 * 100, 2 ) AS salary_growth
 FROM t_payroll_year_1
 LEFT JOIN t_payroll_year_2
 	ON payroll_year = payroll_year_2 -1
-WHERE
-	industry_name = 'Těžba a dobývání' AND industry_name_2 = 'Těžba a dobývání'
-	OR industry_name = 'Vzdělávání' AND industry_name_2 = 'Vzdělávání'
-	OR industry_name = 'Veřejná správa a obrana; povinné sociální zabezpečení' AND industry_name_2 = 'Veřejná správa a obrana; povinné sociální zabezpečení'
-	OR industry_name = 'Peněžnictví a pojišťovnictví' AND industry_name_2 = 'Peněžnictví a pojišťovnictví'
-	OR industry_name = 'Velkoobchod a maloobchod; opravy a údržba motorových vozidel' AND industry_name_2 = 'Velkoobchod a maloobchod; opravy a údržba motorových vozidel'
-	OR industry_name = 'Výroba a rozvod elektřiny, plynu, tepla a klimatiz. vzduchu' AND industry_name_2 = 'Výroba a rozvod elektřiny, plynu, tepla a klimatiz. vzduchu'
-	OR industry_name = 'Zpracovatelský průmysl' AND industry_name_2 = 'Zpracovatelský průmysl'
-	OR industry_name = 'Ostatní činnosti' AND industry_name_2 = 'Ostatní činnosti'
-	OR industry_name = 'Informační a komunikační činnosti' AND industry_name_2 = 'Informační a komunikační činnosti'
-	OR industry_name = 'Stavebnictví' AND industry_name_2 = 'Stavebnictví'
-	OR industry_name = 'Administrativní a podpůrné činnosti' AND industry_name_2 = 'Administrativní a podpůrné činnosti'
-	OR industry_name = 'Kulturní, zábavní a rekreační činnosti' AND industry_name_2 = 'Kulturní, zábavní a rekreační činnosti'
-	OR industry_name = 'Ubytování, stravování a pohostinství' AND industry_name_2 = 'Ubytování, stravování a pohostinství'
-	OR industry_name = 'Zásobování vodou; činnosti související s odpady a sanacemi' AND industry_name_2 = 'Zásobování vodou; činnosti související s odpady a sanacemi'
-	OR industry_name = 'Profesní, vědecké a technické činnosti' AND industry_name_2 = 'Profesní, vědecké a technické činnosti'
-	OR industry_name = 'Zdravotní a sociální péče' AND industry_name_2 = 'Zdravotní a sociální péče'
-	OR industry_name = 'Zemědělství, lesnictví, rybářství' AND industry_name_2 = 'Zemědělství, lesnictví, rybářství'
-	OR industry_name = 'Činnosti v oblasti nemovitostí' AND industry_name_2 = 'Činnosti v oblasti nemovitostí'
-	OR industry_name = 'Doprava a skladování' AND industry_name_2 = 'Doprava a skladování'
-ORDER BY industry_name ASC, payroll_year ASC;
+ORDER BY payroll_year ASC;
+	
 
 SELECT *
 FROM t_salary_growth;
+
 
 -- Vpocet mezirocnimu rustu cen u potravin.
 SELECT *,
 	round((average_price_2 - average_price) / average_price_2 * 100, 2 ) AS price_growth
 FROM t_food_price_change
-ORDER BY price_growth ASC;
-
+GROUP BY year_of_measurement 
+ORDER BY year_of_measurement ASC;
+	
 -- Spojeni dvou tabulek t_difference_salary_food_price a t_food_price_change pres (year_of_measurement = payroll_year).
 CREATE OR REPLACE TABLE t_difference_salary_food_price AS 
 SELECT *
@@ -269,23 +257,25 @@ FROM (
 		round((average_price_2 - average_price) / average_price_2 * 100, 2 ) AS price_growth
 	FROM t_food_price_change) t1
 LEFT JOIN (
-	SELECT payroll_year, industry_name, salary_growth
+	SELECT payroll_year, salary_growth
 	FROM t_salary_growth) t2
 	ON year_of_measurement = payroll_year;
+	
 
 -- Ukazat vse z nove tabulky t_difference_salary_food_price.
 SELECT *
 FROM t_difference_salary_food_price;
+	
 
 -- Filtrovani a urceni poradi dat v tabulce t_difference_salary_food_price.
-SELECT year_of_measurement, food_name, price_growth, salary_growth, industry_name,
-	price_growth - salary_growth AS rozdil
+SELECT year_of_measurement, food_name, price_growth, salary_growth,
+	salary_growth - (price_growth)  AS rozdil
 FROM t_difference_salary_food_price
 ORDER BY rozdil DESC;
 
 -- ODPOVED (4/5): 
--- Ano, je spoustu potravin, ktere mezirocne zdrazily o vice nez 10% narust mezd. Celkem zdrazilo 593 polozek o vice jak 10 % nad rozdil rustu mezd
--- ve srovnavacim obdobi. Nejvice zdrazily konzumni brambory v roce 2012 (47,5%) oproti rustu mzdy pro lidi pracujici v oboru Peneznictvi a pojistovnictvi.  
+-- Zadny takovy rok neni, kde by byl mezirocni narut cen potrvin vyrazne vyssi nez rust mezd. 
+
 
 
 -- 5. OTAZKA:
