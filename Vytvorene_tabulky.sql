@@ -24,40 +24,9 @@ FROM czechia_payroll_industry_branch cpib;
 
 
 -- Spojeni dvou tabulek czechia_price (cpr) a czechia_price_category (cpc) pres "code" a vytvořeni prvni tabulky t1.
-CREATE OR REPLACE TABLE t_martin_kucirek_project_SQL_primary_final AS
-SELECT year_of_measurement, food_name, average_food_price
-FROM (
-	SELECT cpc.name AS food_name, round(avg(cpr.value),2) AS average_food_price, YEAR(cpr.date_from) AS year_of_measurement
-	FROM czechia_price cpr
-	LEFT JOIN czechia_price_category cpc
-	ON cpr.category_code = cpc.code
-	GROUP BY food_name, year_of_measurement
-	ORDER BY year_of_measurement, average_food_price ASC ) t1;
-
-
-SELECT *
-FROM t_martin_kucirek_project_sql_primary_final tmkpspf;
-
 -- Spojeni dvou tabulek czechia_payroll (cpay) a czechia_payroll_industry_branch (cpib) pres "code" a vytvoreni tabulky t2.
-CREATE OR REPLACE TABLE t_Martin_kucirek_project_SQL_primary_final AS
-SELECT payroll_year, industry_name, average_salary
-FROM (
-	SELECT cpib.name AS industry_name, avg(cpay.value) AS average_salary, cpay.payroll_year
-	FROM czechia_payroll cpay
-	LEFT JOIN czechia_payroll_industry_branch cpib
-	ON cpay.industry_branch_code = cpib.code
-	WHERE cpay.value_type_code = 5958
-		AND cpay.calculation_code = 100	
-		AND cpay.unit_code = 200
-		AND cpay.industry_branch_code IS NOT NULL
-	GROUP BY cpib.name, cpay.payroll_year
-	ORDER BY cpay.payroll_year) t2;
-
-SELECT *
-FROM t_martin_kucirek_project_sql_primary_final tmkpspf;
-
-
 -- Spojeni tabulek t1 a t2 pres year_of_measurement = payroll_year.
+
 CREATE OR REPLACE TABLE t_Martin_kucirek_project_SQL_primary_final AS
 SELECT year_of_measurement, payroll_year, food_name, average_food_price, industry_name, average_salary
 FROM (
