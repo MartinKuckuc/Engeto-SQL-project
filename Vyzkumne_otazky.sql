@@ -151,6 +151,8 @@ WHERE average_price IS NOT NULL;
 SELECT *
 FROM t_food_price;
 
+
+
 -- Vytvoreni tabulky t_food_price_change
 CREATE OR REPLACE TABLE t_food_price_change
 SELECT 
@@ -163,35 +165,9 @@ SELECT
 FROM t_Martin_Kucirek_project_SQL_primary_final
 LEFT JOIN t_food_price
 	ON t_Martin_Kucirek_project_SQL_primary_final.year_of_measurement = t_food_price.year_of_measurement_2 - 1
-WHERE 
-	food_name = 'Banány žluté' AND food_name_2 = 'Banány žluté'
-	OR food_name = 'Cukr krystalový' AND food_name_2 = 'Cukr krystalový'
-	OR food_name = 'Rýže loupaná dlouhozrnná' AND food_name_2 = 'Rýže loupaná dlouhozrnná'
-	OR food_name = 'Pšeničná mouka hladká' AND food_name_2 = 'Pšeničná mouka hladká'
-	OR food_name = 'Chléb konzumní kmínový' AND food_name_2 = 'Chléb konzumní kmínový'
-	OR food_name = 'Pečivo pšeničné bílé' AND food_name_2 = 'Pečivo pšeničné bílé'
-	OR food_name = 'Těstoviny vaječné' AND food_name_2 = 'Těstoviny vaječné'
-	OR food_name = 'Hovězí maso zadní bez kosti' AND food_name_2 = 'Hovězí maso zadní bez kosti'
-	OR food_name = 'Vepřová pečeně s kostí' AND food_name_2 = 'Vepřová pečeně s kostí'
-	OR food_name = 'Kuřata kuchaná celá' AND food_name_2 = 'Kuřata kuchaná celá'
-	OR food_name = 'Mléko polotučné pasterované' AND food_name_2 = 'Mléko polotučné pasterované'
-	OR food_name = 'Eidamská cihla' AND food_name_2 = 'Eidamská cihla'
-	OR food_name = 'Jablka konzumní' AND food_name_2 = 'Jablka konzumní'
-	OR food_name = 'Jakostní víno bílé' AND food_name_2 = 'Jakostní víno bílé'
-	OR food_name = 'Jogurt bílý netučný' AND food_name_2 = 'Jogurt bílý netučný'
-	OR food_name = 'Kapr živý' AND food_name_2 = 'Kapr živý'
-	OR food_name = 'Konzumní brambory' AND food_name_2 = 'Konzumní brambory'
-	OR food_name = 'Mrkev' AND food_name_2 = 'Mrkev'
-	OR food_name = 'Máslo' AND food_name_2 = 'Máslo'
-	OR food_name = 'Papriky' AND food_name_2 = 'Papriky'
-	OR food_name = 'Pivo výčepní, světlé, lahvové' AND food_name_2 = 'Pivo výčepní, světlé, lahvové'
-	OR food_name = 'Pomeranče' AND food_name_2 = 'Pomeranče'
-	OR food_name = 'Přírodní minerální voda uhličitá' AND food_name_2 = 'Přírodní minerální voda uhličitá'
-	OR food_name = 'Rajská jablka červená kulatá' AND food_name_2 = 'Rajská jablka červená kulatá'
-	OR food_name = 'Rostlinný roztíratelný tuk' AND food_name_2 = 'Rostlinný roztíratelný tuk'
-	OR food_name = 'Vejce slepičí čerstvá' AND food_name_2 = 'Vejce slepičí čerstvá'
-	OR food_name = 'Šunkový salám' AND food_name_2 = 'Šunkový salám'
+WHERE food_name = food_name_2 
 GROUP BY food_name, food_name_2, year_of_measurement;
+	
 
 -- Zobrazeni tabulky t_food_price_change
 SELECT *
