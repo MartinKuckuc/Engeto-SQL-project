@@ -58,7 +58,7 @@ Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam ulož�
 - Spojeni dvou tabulek t_difference_salary_food_price a t_food_price_change přes (year_of_measurement = payroll_year).
 - Ukázat vše z nové tabulky t_difference_salary_food_price.
 - Filtrováni a určení pořadí dat v tabulce t_difference_salary_food_price.
-- Odpověď: Ano, je spoustu potravin, které meziročně zdražily o vice než 10% nárůstu mezd. Celkem zdražilo 593 položek o vice jak 10 % nad rozdíl růstu mezd ve srovnávacím období. Nejvíce zdražily konzumní brambory v roce 2012 (47,5%) oproti růstu mzdy pro lidi pracující v oboru Peneznictvi a pojistovnictvi.  
+- Odpověď: Žádný takový rok není, kde by byl meziroční nárůst potrvin výrazně vyšší než růst mezd. 
 
 5) Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo násdujícím roce výraznějším růstem?
 - Využiji druhé tabulky t_martin_kucirek_project_sql_secondary_final a přejmenuji si ji pro účely 5. otázky na t_differences_in_salary_and_prices. 
