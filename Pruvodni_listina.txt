@@ -1,22 +1,22 @@
-Úvod do projektu
+Úvod do projektu:
 Na vašem analytickém oddělení nezávislé společnosti, která se zabývá životní úrovní občanů, jste se dohodli, že se pokusíte odpovědět na pár definovaných výzkumných otázek, které adresují dostupnost základních potravin široké veřejnosti. Kolegové již vydefinovali základní otázky, na které se pokusí odpovědět a poskytnout tuto informaci tiskovému oddělení. Toto oddělení bude výsledky prezentovat na následující konferenci zaměřené na tuto oblast.
 Potřebují k tomu od vás připravit robustní datové podklady, ve kterých bude možné vidět porovnání dostupnosti potravin na základě průměrných příjmů za určité časové období.
 Jako dodatečný materiál připravte i tabulku s HDP, GINI koeficientem a populací dalších evropských států ve stejném období, jako primární přehled pro ČR.
 
-Výzkumné otázky
+Výzkumné otázky:
 1) Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
 2) Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
 3) Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
 4) Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
 5) Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo násdujícím roce výraznějším růstem?
 
-Výstup projektu
+Výstup projektu:
 Pomozte kolegům s daným úkolem. Výstupem by měly být dvě tabulky v databázi, ze kterých se požadovaná data dají získat. Tabulky pojmenujte t_{jmeno}_{prijmeni}_project_SQL_primary_final (pro data mezd a cen potravin za Českou republiku sjednocených na totožné porovnatelné období – společné roky) a t_{jmeno}_{prijmeni}_project_SQL_secondary_final (pro dodatečná data o dalších evropských státech).
 Dále připravte sadu SQL, které z vámi připravených tabulek získají datový podklad k odpovězení na vytyčené výzkumné otázky. Pozor, otázky/hypotézy mohou vaše výstupy podporovat i vyvracet! Záleží na tom, co říkají data.
 Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam uložíte všechny informace k projektu – hlavně SQL skript generující výslednou tabulku, popis mezivýsledků (průvodní listinu) a informace o výstupních datech (například kde chybí hodnoty apod.).
 
  
-Řešení
+Řešení a odpovědi:
 1) Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
 - Vypsal jsem si pomocí SELECT informace z tabulky, o které máme zájem. 
 - Vyloučíme z příkazu pomocí WHERE všechny nullove hodnoty (cp.value_type_code = 5958, cp.industry_branch_code IS NOT NULL).
@@ -40,32 +40,28 @@ Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam ulož�
 - Odpověď: Za průměrnou hrubou mzdu si v roce 2006 zaměstnanec může koupit 1362 kilogramu chleba anebo 1360 litru mléka. Za průměrnou hrubou mzdu si v roce 2018 zaměstnanec může koupit 1298 kilogramu chleba anebo 1728 litru mléka.
 
 3) Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
-- Pro tuto výzkumnou otázku jsem si vytvořil dvě tabulky. Pomocí CREATE vytvořím tabulku t_food_price.
+- Vytáhnu si informace z již vytvořené PRIMÁRNÍ! tabulky: t_Martin_Kucirek_project_SQL_primary_final, pomocí CREATE vytvořím tabulku pro 3. úkol s názvem t_food_price. Nicméně vycházím z dat z první tabulky (podmínka pro splnění úkolu tak byla splněna!).
 - Zobrazeni tabulky t_food_price.
-- A následně vytvořím tabulku t_food_price_change.
-- Zobrazeni tabulky t_food_price_change.
+- A následně vytvořím tabulku t_food_price_change. Data musím brát z jine tabulky, abych novou tabulku mohl propojit s tabulkou primary. Spojím tak primární tabulku  (t_Martin_Kucirek_project_SQL_primary_final), ze které vycházím a tabulku t_food_price. Podmínka pro splnění úkolu opět byla splněna. 
 - Výpočet meziročního nárůstu v tabulce t_food_price_change pomocí klauzule: round((average_price_2 - average_price) / average_price_2 * 100, 2 ) AS price_growth
+- Odpověď na otázku a je generovaná z hlavni primární tabulky – podmínky byly SPLNĚNY!  
 - Odpověď: Mnoho potravin meziročně zlevnilo. Jedna se celkem o 119 položek ve srovnávacími období mezi lety 2006-2018. Nejvíce zlevnily rajská jablka červena kulata, která mezi lety 2006 a 2007 zlevnily o 43,43 % (z 57,83 Kč za kg na 40,32 Kč). Nejmenší narůst průměrných cen byl pozorován u rostlinného roztíratelného tuku, který mezi lety 2008 a 2009 zdražil pouze o 0.01 % (z 84,4 Kč za litr a 84,41 Kč).
 
+
 4) Existuje rok, ve kterém byl meziroční nárůst cen potravin výrazně vyšší než růst mezd (větší než 10 %)?
-- Vytvoření si nové tabulky pomocí CREATE a spojeni dvou tabulek czechia_payroll (cpay) a czechia_payroll_industry_branch (cpib) pres "code" a vytvoreni tabulky t2.
-- Vytvořeni tabulky t_payroll_1
-- Vytvořeni tabulky t_payroll_year_2
-- Spojeni tabulek t_payroll_year_1 a t_payroll_year_2 pomocí LEFT JOIN, kde payroll_year_2 bude ve druhém sloupci o jeden rok menší, viz: payroll_year = payroll_year_2 -1 
-- Vytvořeni nove tabulky t_salary_growth pomocí CREATE.
-- Zobrazení nové tabulky t_salary_growth pomocí SELECT.
-- Výpočet meziročního růstu cen u potravin pomocí příkazu: (round((average_price_2 - average_price) / average_price_2 * 100, 2 ) AS price_growth
-- Spojeni dvou tabulek t_difference_salary_food_price a t_food_price_change přes (year_of_measurement = payroll_year).
-- Ukázat vše z nové tabulky t_difference_salary_food_price.
-- Filtrováni a určení pořadí dat v tabulce t_difference_salary_food_price.
-- Odpověď: Žádný takový rok není, kde by byl meziroční nárůst potrvin výrazně vyšší než růst mezd. 
+- Pro účely 4. úkolu si vytvořím novou tabulku: t_payroll_year_2 
+- Spojeni PRIMÁRNÍ tabulky t_Martin_kucirek_project_SQL_primary_final (ze které vycházím!) a t_payroll_year_2, vytvoření si tak nové tabulky t_salary_growth. 
+- Vpočet meziročního růstu cen potravin. K vypočtu pomohla tabulka ze 3. úkolu: t_food_price_change. Tato tabulka generuje odpovědi z PRIMARNI! tabulky.
+- Spojení dvou tabulek t_difference_salary_food_price a t_food_price_change přes (year_of_measurement = payroll_year).
+- Ukázat vše z nové tabulky t_difference_salary_food_price a následné filtrování dat. 
+- Odpověď na otázku a je generovaná z hlavnÍ primární tabulky – podmínky byly SPLNĚNY!
+- Odpověď: Žádný takový rok není, kde by byl meziroční nárůst potravin výrazně vyšší než růst mezd. 
+
 
 5) Má výška HDP vliv na změny ve mzdách a cenách potravin? Neboli, pokud HDP vzroste výrazněji v jednom roce, projeví se to na cenách potravin či mzdách ve stejném nebo násdujícím roce výraznějším růstem?
-- Využiji druhé tabulky t_martin_kucirek_project_sql_secondary_final a přejmenuji si ji pro účely 5. otázky na t_differences_in_salary_and_prices. 
-- Přidám podmínku pro Czech Republic.
-- Zadám kluzuli lag - OVER. Příkaz použije údaje z předchozího řádku srovnáno podle YEAR a vypočítá se change_of_gdp, viz: round(((gdp - (lag(gdp) OVER (ORDER BY `YEAR`))) / (lag(gdp) OVER (ORDER BY `YEAR`)) * 100), 2) AS change_of_gdp
-- Zobrazení tabulky vytvořené pro účely 4. úkolu: t_difference_salary_food_price
-- Ukázat vše z nove tabulky t_difference_salary_food_price.
-- Spojeni tabulek t_difference_salary_food_price a t_difference_salary_food_price přes  t_differences_in_salary_and_prices.year = t_difference_salary_food_price.year_of_measurement.
-- Filtrovani zobrazovacich dat v tabulce pomocí SELECT (year_of_measurement, country_countries, food_name, industry_name, change_of_gdp, price_growth, salary_growth, difference_price_and_salary)
+- Využiji SEKUNDÁRNÍ tabulku t_martin_kucirek_project_sql_secondary_final a vytvořím si view, který upravuji. Přidám podmínku pro Czech Republic. Využiju vypočtu pomoci lag - OVER. Klauzule použije údaje z předchozího řádku, srovnáno podle YEAR a vypočítá se change_of_gdp. Zobrazení nového view.
+- Pomůžu si tabulkou ze 4. úkolu, kterou si upravím. 
+-  Ukázat vše z nove tabulky t_difference_salary_food_price.
+- Spojeni tabulek t_difference_salary_food_price a t_difference_salary_food_price přes t_differences_in_salary_and_prices.year = t_difference_salary_food_price.year_of_measurement. Filtrovani zobrazovacich dat v tabulce pomocí SELECT.
+- Odpověď na otázku a je generovaná ze sekundární tabulky – podmínky byly SPLNĚNY!
 - Odpověď: Podle výsledků z tabulky nemá přímý vliv na cenu veškerého zboží růst mezd jednotlivých odvětví anebo narůst gdp.
