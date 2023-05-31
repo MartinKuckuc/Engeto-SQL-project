@@ -23,20 +23,14 @@ Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam ulož�
 - Odpověď: Data v tabulce referuji celkem o 19 odvětví. Většinové rostou průměrné mzdy zaměstnanců. Ovsem jsou roky, kdy dojde k poklesu hrubé mzdy zaměstnanců. Atak jsou pouze 2 odvětví, ve kterých rostou mzdy po celou dobu. Odvětví N (Administrativni a podpurne cinnosti) a J (Informacni a komunikacni oblasti).
 
 2) Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
-- V tabulce czechia_price si nalezneme pomocí příkazu SELECT potraviny, které hledáme - mléko a chleba.
-- Výsledek: Kód potravin je 114201 a 111301.
-- Pomoci příkazu GROUP BY si najdeme, jaké bylo první a poslední zúčtovací období.
-- Výsledek: První a poslední srovnávací období je 2006 a 2018.
-- Najdeme si, kolik stalo mléko a chleba v prvním srovnávacím období. 
-- Výsledek: Chléb stal 14,11 Kč a mléko 14,13 Kč v roce 2006. 
-- A kolik produkty staly v posledním srovnávacím období.
-- Výsledek: Chléb stal 24,28 Kč a mléko 18,24 Kč. 
-- Opustíme tabulku czechia_price a začneme vyhledávat informace v tabulce czechia_payroll. Kolik byla průměrná hrubá mzda mzda (kod 5958) v prvním a kolik v posledním srovnatelném období (2006 a 2018)? Příkazy WHERE a GROUP BY nám ukazují vysledek za jednotlive kategorie A-S v letech 2006 a 2018.
-- Jaká byla průměrná hrubá mzda za všechny kategorie v roce 2006? 
--  Výsledek: 19.218,875 Kč
-- Jaká byla průměrná hrubá mzda za všechny kategorie v roce 2018?
-- Výsledek: 31.520,5 Kč
-- Odpověď: Za průměrnou hrubou mzdu si v roce 2006 zaměstnanec může koupit 1362 kilogramu chleba anebo 1360 litru mléka. Za průměrnou hrubou mzdu si v roce 2018 zaměstnanec může koupit 1298 kilogramu chleba anebo 1728 litru mléka.
+- Využiju PRIMÁRNÍ tabulku a vyhledám, jaká byla průměrná mzda v letech 2006 a 2018. 
+- Využiju PRIMÁRNÍ tabulku a vyhledám průměrnou cenu mléka a chleba v roce 2006 a 2018.
+- Provedu výpočet.
+- Odpověď: Z prumerného platu si zaměstnanec mohl v roce 2006 koopit 1408 litru mléka. 
+Z průměrného platu si zamestnanec mohl v roce 2006 koopit 1261 kilogramů chleba. 
+Z průměrného platu si zamestnanec mohl v roce 2006 koopit 1613 litrů mleka.  
+Z průměrného platu si zamestnanec mohl v roce 2006 koopit 1319 kilogramů chleba. 
+
 
 3) Která kategorie potravin zdražuje nejpomaleji (je u ní nejnižší percentuální meziroční nárůst)?
 - Vytáhnu si informace z již vytvořené PRIMÁRNÍ! tabulky: t_Martin_Kucirek_project_SQL_primary_final, pomocí CREATE vytvořím tabulku pro 3. úkol s názvem t_food_price. Nicméně vycházím z dat z první tabulky (podmínka pro splnění úkolu tak byla splněna!).
