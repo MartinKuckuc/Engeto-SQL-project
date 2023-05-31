@@ -18,9 +18,8 @@ Na svém GitHub účtu vytvořte repozitář (může být soukromý), kam ulož�
  
 Řešení a odpovědi:
 1) Rostou v průběhu let mzdy ve všech odvětvích, nebo v některých klesají?
-- Vypsal jsem si pomocí SELECT informace z tabulky, o které máme zájem. 
-- Vyloučíme z příkazu pomocí WHERE všechny nullove hodnoty (cp.value_type_code = 5958, cp.industry_branch_code IS NOT NULL).
-- Sečteme pomoci GROUP BY všechny hodnoty jednotlivých odvětví za dany rok a porovnáme růst mezd mezi sebou.
+- Využil jsem již vytvořenou PRIMÁRNÍ tabulku a pomocí klauzulí SELECT a GROUP BY jsem si z ní vygeneroval informace, které jsem potřeboval. 
+- Podmínky zadání tak byly naplněny.
 - Odpověď: Data v tabulce referuji celkem o 19 odvětví. Většinové rostou průměrné mzdy zaměstnanců. Ovsem jsou roky, kdy dojde k poklesu hrubé mzdy zaměstnanců. Atak jsou pouze 2 odvětví, ve kterých rostou mzdy po celou dobu. Odvětví N (Administrativni a podpurne cinnosti) a J (Informacni a komunikacni oblasti).
 
 2) Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období v dostupných datech cen a mezd?
